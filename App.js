@@ -1,21 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Providers from './navigation';
+import * as Font from 'expo-font'
+import Expo from "expo";
+import { View,ActivityIndicator} from 'react-native';
+const Light = require('./assets/fonts/Lato-Light.ttf');
+const Base = require('./assets/fonts/Lato-Regular.ttf');
+const Hairline = require('./assets/fonts/Lato-Hairline.ttf');
+const Bold = require('./assets/fonts/Lato-Bold.ttf');
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+class App extends React.Component{
+
+  constructor(props)
+  {
+    super(props);
+    this.state = { loading: true };
+  }
+
+  async componentDidMount()
+  {
+    await Font.loadAsync({
+    'Lato-Light': Light,
+    'Lato-Regular' : Base,
+    'Lato-Hairline' : Hairline,
+    'Lato-Bold' : Bold
+    });
+
+    this.setState({ loading: false });
+  }
+
+  render()
+  {
+
+    if (this.state.loading) {
+   return (
+     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+       <ActivityIndicator size="large" />
+     </View>
+   );
+ }
+   else {
+    return (<Providers />);
+   }
+
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+export default App;
